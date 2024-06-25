@@ -1,0 +1,291 @@
+<div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+        <mat-icon>view_in_ar</mat-icon>
+        <p style="font-size: 1.4rem; margin: 0; margin-left: 5px;"> Você está em <strong>Produtos</strong></p>
+    </div>
+
+    <p-button [style]="{'border-radius': '6px', 'font-size': '1.3rem', 'font-weight': '400' }" label="Produto"
+        icon="pi pi-plus" [text]="true" size="large" [raised]="true" severity="secondary"
+        (onClick)="getCategories();showdialogRegisterProduct = !showdialogRegisterProduct" />
+</div>
+
+<p-divider></p-divider>
+
+<br>
+
+<!-- <div class="grid"> -->
+<p-table [tableStyle]="{'font-size': '1.5rem'}" [value]="products" [(selection)]="selectedProducts" dataKey="id"
+    [breakpoint]="'1000px'">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 4rem; background: transparent;"><p-tableHeaderCheckbox /></th>
+            <th style="background: transparent;">ID</th>
+            <th style="background: transparent;">Nome</th>
+            <th style="background: transparent;">Categoria</th>
+            <th style="background: transparent;">Link</th>
+            <th style="background: transparent;">Preço</th>
+            <th style="background: transparent;">Ativo</th>
+            <th style="background: transparent;"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr style="background: transparent;">
+            <td>
+                <p-tableCheckbox [value]="product" />
+            </td>
+            <td>{{product.id}}</td>
+            <td>{{product.name}}</td>
+            <td>
+                @if (product.categories.length) {
+                @if (product.categories.length > 1) {
+                <div class="button-rounded" matTooltip="Grupos" (click)="openDialogCategories(op, $event, product)">
+                    <mat-icon>view_compact_alt</mat-icon>
+                </div>
+                } @else {
+                <a style="text-decoration: none; color: #494949; font-weight: 500;">{{product.categories[0].name}}</a>
+                }
+
+                } @else {
+                <a style="text-decoration: none; color: #494949; font-weight: 600;">N/A</a>
+                }
+            </td>
+            <td style="min-width: 65px;">
+                <div class="button-rounded" (click)="openLink(product.permalink)">
+                    <mat-icon>travel_explore</mat-icon>
+                </div>
+            </td>
+            <td>{{product.sale_price | currency : 'BRL'}}</td>
+            <td> <mat-icon style="color: #09b107;">{{product.on_sale? 'verified' : 'radio_button_unchecked'}}</mat-icon>
+            </td>
+            <td>
+                <div class="button-rounded" matTooltip="Visualizar" (click)="showDialog(product)">
+                    <mat-icon>visibility</mat-icon>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog header="Visualizando Produto" [modal]="true" [(visible)]="showdialogProduct" [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    @if (productShow) {
+    <div class="info-dialog">
+        <h2 style="margin: 0;">#{{productShow?.id}}</h2>
+        <p style="font-weight: 600;"> <strong>{{productShow?.name}}</strong> </p>
+        <p style="cursor: pointer;" (click)="openLink(productShow?.permalink)"> <a>Link</a>{{productShow?.permalink}}
+        </p>
+        <p> <a>Visível</a>{{productShow?.permalink? 'Sim' : 'Não'}} </p>
+        <p> <a>SKU</a>{{productShow?.sku || 'N/A'}} </p>
+        <p> <a>Categorias</a>
+            @for (item of productShow.categories; track $index) {
+            {{$index+1 == productShow.categories.length? item?.name : item?.name + ','}}
+            }
+        </p>
+
+        <p> <a>Peso (G)</a> {{productShow?.weight ||
+            0}}</p>
+
+        <p> <a>Tamanho (CM)</a>Comp. (<strong>{{productShow?.length || 0}}</strong>) / Larg.
+            (<strong>{{productShow?.width || 0}}</strong>) / Alt. (<strong>{{productShow?.height || 0}}</strong>) </p>
+
+        <p> <a>Vendas</a>{{productShow?.total_sales || 0}} </p>
+        <p> <a>Controle</a>{{productShow?.manage_stock? 'Estocável' : 'Não controla estoque'}} </p>
+        <p> <a>Estoque</a>{{productShow?.stock_quantity || 0}} </p>
+
+        <p> <a>Preço</a> <strong>{{productShow?.regular_price || 0 | currency : 'BRL'}}</strong> </p>
+        <p> <a>Preço Promocional</a> <strong>{{productShow?.sale_price || 0 | currency : 'BRL'}}</strong> </p>
+
+        <p-divider></p-divider>
+        <p style="font-weight: 600;"> <strong>Imagens do Produto</strong> </p>
+
+        <div class="d-flex w-100 flex-row justify-content-center">
+            <p-galleria [value]="productShow.images" [responsiveOptions]="responsiveOptions"
+                [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
+                <ng-template pTemplate="item" let-item>
+                    <img [src]="item.src" style="width: 100%;" />
+                </ng-template>
+                <ng-template pTemplate="thumbnail" let-item>
+                    <div class="grid grid-nogutter justify-content-center">
+                        <img height="70px" width="70px" [src]="item.src" />
+                    </div>
+                </ng-template>
+            </p-galleria>
+        </div>
+
+    </div>
+    }
+</p-dialog>
+
+
+<p-overlayPanel #op [style]="{ width: '450px' }" [showCloseIcon]="true">
+    <ng-template pTemplate="content">
+        <div style="width: 100%; margin-bottom: 10px;">
+            <div class="d-flex align-items-center"
+                style="margin-bottom: 3px; user-select: none; width: 100%;  box-shadow: inset 0px 0px 10px #0000001a; background: #fff; border-radius: 5px; padding: 5px; ">
+                <mat-icon>view_in_ar</mat-icon>
+                <p style="margin: 0; margin-left: 10px;  font-size: 1.2rem; color: #4b5563; text-align: center; ">
+                    <strong>{{productSelectedCategorie.name}}</strong>
+                </p>
+            </div>
+
+            <p-divider></p-divider>
+        </div>
+
+        <p-table [value]="productSelectedCategorie.categories" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+                    <th pSortableColumn="name">
+                        Descrição <p-sortIcon field="name" />
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-categorie>
+                <tr>
+                    <td style="font-weight: 500;">
+                        {{ categorie.id }}
+                    </td>
+                    <td style="font-weight: 600; margin-left: 8px;">
+                        {{ categorie.name }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-template>
+</p-overlayPanel>
+
+<!-- DIALOG REGISTRO -->
+<p-dialog header="Header" [(visible)]="showdialogRegisterProduct" [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }" [draggable]="false"
+    [resizable]="false">
+
+    <ng-template pTemplate="header">
+        <div class="d-inline-flex align-items-center justify-content-center gap-2">
+            <mat-icon style="font-size: 35px; width: 35px; height: 35px;">view_in_ar</mat-icon>
+            <span style="font-size: 1.5rem;" class="font-bold white-space-nowrap">
+                Cadastro de Produto
+            </span>
+        </div>
+    </ng-template>
+    <div class="d-flex flex-column w-100" [formGroup]="formProduct">
+        <!-- <span class=" p-text-secondary mb-4">Preencha os campos abaixo.</span> -->
+        <span class="p-text-secondary mb-4 h5">Informações do Produto</span>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input matInput placeholder="Nome do produto..." formControlName="name">
+            <mat-icon matSuffix>view_in_ar</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Descrição</mat-label>
+            <input matInput placeholder="Descrição longa..." formControlName="description">
+            <mat-icon matSuffix>view_in_ar</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Descrição Curta</mat-label>
+            <input matInput placeholder="Descrição curta..." formControlName="short_description">
+            <mat-icon matSuffix>view_in_ar</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Preço</mat-label>
+            <input matInput placeholder="10.99" formControlName="regular_price">
+            <mat-icon matSuffix>view_in_ar</mat-icon>
+        </mat-form-field>
+
+        <p-divider></p-divider>
+
+        <span class="p-text-secondary mb-4 h5">Categorias</span>
+
+        <!-- <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Categoria</mat-label>
+            <input #category matInput placeholder="pesquise a categoria">
+            <button matSuffix mat-icon-button aria-label="Adicionar Categoria"
+                (click)="arrayCategories.push({id: category.value, name: category.value});category.value = '';">
+                <mat-icon>view_compact_alt</mat-icon>
+            </button>
+        </mat-form-field> -->
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Categorias</mat-label>
+            <input #searchCategorie (input)="filter(searchCategorie.value || '')"
+                (focus)="filter(searchCategorie.value || '')" type="text" placeholder="Selecione a categoria" matInput
+                [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                @for (option of filterCategories; track $index) {
+                <mat-option [value]="option.id"
+                    (click)="arrayCategories.push({id: option.id, name: option.name});categories.splice(categories.indexOf(option), 1);searchCategorie.value = '';">
+                    ({{option.id}}) - {{option.name}}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+
+
+        @if (arrayCategories.length) {
+        <div class="d-inline-flex align-items-center gap-3 w-100 p-3 mb-4 rounded shadow overflow-auto">
+            @for (item of arrayCategories; track $index) {
+            <span class="d-flex flex-row align-items-center font-bold h6 gap-2">
+                <p-button
+                    [style]="{'text-wrap': 'nowrap', 'border-radius': '3px', 'font-size': '1rem', 'font-weight': '400', 'background': '#1158A1', 'color': '#fff' }"
+                    label="({{item.id}}) - {{item.name}}" icon="pi pi-times" [text]="true" [raised]="true"
+                    severity="warning"
+                    (onClick)="arrayCategories.splice(arrayCategories.indexOf(item), 1); categories.push(item);" />
+            </span>
+            }
+        </div>
+        <span class="p-text-secondary mb-2 font-semibold">clique encima da categoria p/ removê-la.</span>
+        }
+
+        <p-divider></p-divider>
+
+        <span class="p-text-secondary mb-4 h5">Imagens</span>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>URL da Imagem</mat-label>
+            <input #urlimg matInput placeholder="url da imagem..." type="text">
+            <button matSuffix mat-icon-button aria-label="Adicionar Imagem"
+                (click)="addImageArray(urlimg.value);urlimg.value = '';">
+                <mat-icon>add_a_photo</mat-icon>
+            </button>
+
+        </mat-form-field>
+
+        @if (arrayImages.length) {
+        <div class="d-inline-flex align-items-center gap-3 w-100 p-3 mb-4 rounded shadow overflow-auto">
+            @for (item of arrayImages; track $index) {
+            <span class="d-flex flex-column align-items-center font-bold h6 gap-2">
+                <img height="75px" width="75px" [src]="item.src" alt="">
+                <p-button
+                    [style]="{'border-radius': '3px', 'font-size': '1rem', 'font-weight': '400', 'background': '#B30303', 'color': '#fff' }"
+                    label="Remover" icon="pi pi-times" [text]="true" [raised]="true" severity="danger"
+                    (onClick)="arrayImages.splice(arrayImages.indexOf(item), 1)" />
+            </span>
+            }
+        </div>
+        }
+
+        <p-divider></p-divider>
+        <br>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="d-flex  align-items-center justify-content-center gap-5 w-100">
+            <p-button
+                [style]="{'border-radius': '6px', 'font-size': '1.3rem', 'font-weight': '400', 'background': '#181818', 'color': '#fff' }"
+                label="Fechar" icon="pi pi-times" [text]="true" size="large" [raised]="true" severity="secondary"
+                (onClick)="showdialogRegisterProduct = !showdialogRegisterProduct" />
+
+            <p-button
+                [style]="{'border-radius': '6px', 'font-size': '1.3rem', 'font-weight': '400', 'background': '#03B362', 'color': '#fff' }"
+                label="Salvar" icon="pi pi-check" [text]="true" size="large" [raised]="true" severity="success"
+                (onClick)="saveProduct(formProduct);" />
+
+            <!-- <p-button label="Fechar" [text]="true" severity="secondary" (click)="showdialogRegisterProduct = false" />
+            <p-button label="Salvar" [outlined]="true" severity="success" (click)="showdialogRegisterProduct = false" /> -->
+        </div>
+    </ng-template>
+</p-dialog>
+
+<!-- </div> -->

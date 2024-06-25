@@ -1,0 +1,48 @@
+<div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+        <mat-icon>groups</mat-icon>
+        <p style="font-size: 1.4rem; margin: 0; margin-left: 5px;"> Você está em <strong>Clientes</strong></p>
+    </div>
+
+    <p-button [style]="{'border-radius': '6px', 'font-size': '1.3rem', 'font-weight': '400' }" label="Cliente"
+        icon="pi pi-plus" [text]="true" size="large" [raised]="true" severity="secondary" />
+</div>
+
+<p-divider></p-divider>
+
+<br>
+
+<!-- <div class="grid"> -->
+<p-table [tableStyle]="{'font-size': '1.5rem'}" [value]="clients" [(selection)]="selectedClients" dataKey="id"
+    [breakpoint]="'1000px'">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="background: transparent;">ID</th>
+            <th style="background: transparent;">Nome</th>
+            <th style="background: transparent;">Telefone</th>
+            <th style="background: transparent;">Cidade</th>
+            <th style="background: transparent;"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-client>
+        <tr style="background: transparent;">
+            <td>{{client.id}}</td>
+            @if (client.first_name != '' && client.last_name != '') {
+            <td>{{client.first_name}} {{client.last_name}}</td>
+            } @else {
+            <td>{{client.username}}</td>
+            }
+            <td>{{client.billing.phone || 'N/A'}}</td>
+            <td>{{client.billing.city || 'N/A'}}</td>
+            <!-- <td> <mat-icon>{{client.on_sale? 'verified' : 'radio_button_unchecked'}}</mat-icon>
+            </td> -->
+            <td>
+                <div class="button-rounded" matTooltip="{{client.first_name || client.username}}">
+                    <mat-icon>visibility</mat-icon>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<!-- </div> -->

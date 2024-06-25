@@ -1,0 +1,62 @@
+<p-toolbar styleClass="bg-gray-900 shadow-2" [style]="{ 
+    'height': '7rem',
+    'padding': '0 2rem 0 1rem',
+    'position': 'fixed',
+    'left': '0',
+    'top': '0',
+    'width': '100%',
+    'z-index': '1000',
+    'display': 'flex',
+    'align-items': 'center',
+    'background': '#fff',
+    'border-style': 'none', 
+    'border-radius': '0px' 
+    }">
+    <ng-template pTemplate="start">
+        <div class="img-menu">
+            <img width="35px" src="../../assets/images/logo_mtt_small.png" />
+        </div>
+    </ng-template>
+    <!-- <ng-template pTemplate="center">
+        <div class="search-box">
+            <button class="btn-search">
+                <mat-icon>search</mat-icon>
+            </button>
+            <input type="text" class="input-search">
+        </div>
+    </ng-template> -->
+    <ng-template pTemplate="end">
+
+        <div class="search-box">
+            <button class="btn-search">
+                <mat-icon>search</mat-icon>
+            </button>
+            <input type="text" class="input-search">
+        </div>
+
+
+        <div class="profile-menu">
+            <img src="../../assets/images/logo_mtt_small.png" alt="">
+
+            <div class="info-user">
+                <p>Thalles Henrique</p>
+                <a>Desenvolvedor</a>
+            </div>
+
+            <mat-icon [matMenuTriggerFor]="menu">expand_more</mat-icon>
+        </div>
+
+    </ng-template>
+
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+            <mat-icon>badge</mat-icon>
+            <span style="font-size: 1.2rem;">Perfil</span>
+        </button>
+
+        <button mat-menu-item>
+            <mat-icon>lock_reset</mat-icon>
+            <span style="font-size: 1.2rem;">Alterar senha</span>
+        </button>
+    </mat-menu>
+</p-toolbar>

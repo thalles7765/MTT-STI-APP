@@ -1,0 +1,230 @@
+<div class="d-flex align-items-center">
+    <mat-icon>settings</mat-icon>
+    <p style="font-size: 1.4rem; margin: 0; margin-left: 5px;"> Você está em <strong>Configurações</strong></p>
+</div>
+
+<p-divider></p-divider>
+
+<br>
+
+<!-- <div class="grid"> -->
+<p-tabView styleClass="tabview-custom">
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="d-inline-flex align-items-center gap-2">
+                <mat-icon>settings</mat-icon>
+                <span class="font-bold white-space-nowrap m-0 h6">
+                    Geral
+                </span>
+            </div>
+        </ng-template>
+        <div class="d-flex flex-column w-100">
+            <div class="d-inline-flex align-items-center gap-2">
+                <p class="m-0 font-semibold h6">Modo manutenção: </p>
+                <p-inputSwitch />
+            </div>
+
+            <p-divider></p-divider>
+            <span class="p-text-secondary mb-4 h6">Licença Motter Sistemas</span>
+
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Motter Key</mat-label>
+                <input matInput placeholder="API Key">
+                <mat-icon matSuffix>vpn_key</mat-icon>
+            </mat-form-field>
+
+            <p-button
+                [style]="{'border-radius': '6px', 'font-size': '1.2rem', 'font-weight': '400', 'background': '#03B362', 'color': '#fff' }"
+                label="Verificar" icon="pi pi-refresh" [text]="true" size="large" [raised]="true" severity="success" />
+
+            <p-divider></p-divider>
+
+            <div class="d-inline-flex align-items-center gap-4 w-100 flex-wrap user-select-none">
+
+                <div class="d-flex flex-column">
+                    <span class="p-text-secondary h6 font-semibold">Validade</span>
+                    <div class="d-inline-flex align-items-center bg-dark rounded shadow p-2 gap-3 mb-3 w-100">
+                        <mat-icon class="text-light">date_range</mat-icon>
+                        <span class="h6 font-bold text-light">--/--/----</span>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column">
+                    <span class="p-text-secondary h6 font-semibold">Validade</span>
+                    <div class="d-inline-flex align-items-center bg-dark rounded shadow p-2 gap-3 mb-3 w-100">
+                        <mat-icon class="text-light">date_range</mat-icon>
+                        <span class="h6 font-bold text-light">--/--/----</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </p-tabPanel>
+    <p-tabPanel header="Header II">
+        <ng-template pTemplate="header">
+            <div class="d-inline-flex align-items-center gap-2">
+                <mat-icon>account_tree</mat-icon>
+                <span class="font-bold white-space-nowrap m-0 h6">
+                    Banco de Dados
+                </span>
+            </div>
+        </ng-template>
+
+
+        <p-panel [toggleable]="true" [collapsed]="true">
+            <ng-template pTemplate="header">
+                <div class="d-flex align-items-center gap-2">
+                    <p-avatar image="../../../../assets/images/logo_mtt_small.png" size="large" shape="circle" />
+                    <span class="font-bold h6">
+                        Cadastrar base de dados
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="body">
+                <br>
+                <form [formGroup]="formDatabase">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Banco de Dados</mat-label>
+                        <mat-select formControlName="connection">
+                            <mat-option value="1">Firebird</mat-option>
+                            <mat-option value="2">MySQL</mat-option>
+                            <mat-option value="3">PostgreSQL</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Host</mat-label>
+                        <input formControlName="host" matInput placeholder="127.0.0.1">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Port</mat-label>
+                        <input formControlName="port" matInput placeholder="4200">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Database</mat-label>
+                        <input formControlName="database" matInput placeholder="c:\base\teste ou DataBaseName">
+                        <mat-icon matSuffix>account_tree</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>User</mat-label>
+                        <input formControlName="user" matInput placeholder="root">
+                        <mat-icon matSuffix>admin_panel_settings</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input formControlName="password" matInput type="password">
+                        <mat-icon matSuffix>lock</mat-icon>
+                    </mat-form-field>
+                </form>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <p-button
+                            [style]="{'border-radius': '6px', 'font-size': '1.2rem', 'font-weight': '400', 'background': '#252525', 'color': '#fff' }"
+                            label="Testar Conexão" icon="pi pi-refresh" [text]="true" size="large" [raised]="true"
+                            severity="secondary" />
+                        <p-button
+                            [style]="{'border-radius': '6px', 'font-size': '1.2rem', 'font-weight': '400', 'background': '#03B362', 'color': '#fff' }"
+                            label="Registrar Conexão" icon="pi pi-check" [text]="true" size="large" [raised]="true"
+                            severity="success" (onClick)="saveConnection(formDatabase)" />
+                    </div>
+                    <span class="p-text-secondary h6 font-bold">
+                        Teste não realizado...
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="icons">
+
+            </ng-template>
+
+        </p-panel>
+
+        <br>
+        <p-divider></p-divider>
+        <br>
+
+        <p-panel [toggleable]="true" [collapsed]="false">
+            <ng-template pTemplate="header">
+                <div class="d-flex align-items-center gap-2">
+                    <p-avatar image="../../../../assets/images/logo_mtt_small.png" size="large" shape="circle" />
+                    <span class="font-bold h6">
+                        Visualizar Base de Dados
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="body">
+                @if (databases?.length) {
+                <p-table [tableStyle]="{'font-size': '1.5rem'}" [value]="databases" dataKey="id"
+                    [breakpoint]="'1000px'">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="background: transparent;">Conexão</th>
+                            <th style="background: transparent;">Host</th>
+                            <th style="background: transparent;">Port</th>
+                            <th style="background: transparent;">Database</th>
+                            <th style="background: transparent;">User</th>
+                            <th style="background: transparent;">Password</th>
+                            <th style="background: transparent;"></th>
+                        </tr>
+                        <br>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-datacnn>
+                        <tr style="background: transparent;">
+                            <td class="p-3">
+                                <div [class]="datacnn.connection == 1? 'd-inline-flex gap-3 bg-warning align-items-center p-2 shadow rounded w-100'
+                                    : datacnn.connection == 2? 'd-inline-flex gap-3 bg-dark align-items-center p-2 shadow rounded w-100' 
+                                    : 'd-inline-flex gap-3 bg-primary align-items-center p-2 shadow rounded w-100'">
+                                    <mat-icon class="text-light">storage</mat-icon>
+                                    <span class="text-light h6 font-bold">{{datacnn.connection == 1? 'Firebird' :
+                                        datacnn.connection == 2? 'MySQL' : 'PostgreSQL'}}</span>
+                                </div>
+                            </td>
+                            <td>{{datacnn.host}}</td>
+                            <td>{{datacnn.port}}</td>
+                            <td>{{datacnn.database}}</td>
+                            <td>{{datacnn.user}}</td>
+                            <td>{{datacnn.password}}</td>
+                            <td>
+                                <div class="button-rounded" matTooltip="Testar">
+                                    <mat-icon>refresh</mat-icon>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <br>
+                    </ng-template>
+                </p-table>
+                } @else {
+                <span class="p-text-secondary font-bold h6 text-center">Nenhum registro encontrado...</span>
+                }
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                    <span class="p-text-secondary h6 font-bold">
+                        Total de registros (<strong>{{databases?.length || 0}}</strong>)
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="icons">
+
+            </ng-template>
+
+        </p-panel>
+
+    </p-tabPanel>
+</p-tabView>
+
+<!-- </div> -->

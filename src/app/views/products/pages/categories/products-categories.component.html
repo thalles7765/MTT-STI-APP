@@ -1,0 +1,83 @@
+<div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+        <mat-icon>view_compact_alt</mat-icon>
+        <p style="font-size: 1.4rem; margin: 0; margin-left: 5px;"> Você está em <strong>Produtos - Categorias</strong>
+        </p>
+    </div>
+
+    <p-button [style]="{'border-radius': '6px', 'font-size': '1.3rem', 'font-weight': '400' }" label="Categoria"
+        icon="pi pi-plus" [text]="true" size="large" [raised]="true" severity="secondary" />
+</div>
+
+<p-divider></p-divider>
+
+<br>
+
+<!-- <div class="grid"> -->
+<p-table [tableStyle]="{'font-size': '1.5rem'}" [value]="categories" dataKey="id" [breakpoint]="'1000px'">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="background: transparent;">ID</th>
+            <th style="background: transparent;">Descrição</th>
+            <th style="background: transparent;">Qtd. Produtos</th>
+            <th style="background: transparent;"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-categorie>
+        <tr style="background: transparent;">
+            <td>{{categorie.id}}</td>
+            <td>{{categorie.name}}</td>
+            <td>
+                <!-- @if (!loadingProductsCategorie) { -->
+                @if (categoryOpen.indexOf(categorie.id) != -1) {
+                <p-progressSpinner [style]="{ 'width': '25px', 'height': '25px' }" strokeWidth="10"
+                    fill="var(--surface-ground)" animationDuration=".5s" />
+                } @else {
+                <div (click)="getProductsCategorie(op, $event, categorie)"
+                    class="d-flex align-items-center justify-content-center"
+                    style="user-select: none; cursor: pointer; border-radius: 50%; background: #1d1d1d; padding: 5px; width: fit-content; ">
+                    <a style="color: #fff; font-size: 1.2rem; font-weight: 600;">{{categorie.count || 0}}</a>
+                </div>
+                }
+            </td>
+            <!-- <td> <mat-icon>{{product.on_sale? 'verified' : 'radio_button_unchecked'}}</mat-icon>
+            </td> -->
+            <td>
+                <div class="button-rounded" matTooltip="Visualizar">
+                    <mat-icon>visibility</mat-icon>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-overlayPanel #op [style]="{ width: '450px' }" [showCloseIcon]="true">
+    <ng-template pTemplate="content">
+        <p-table [value]="products" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Imagem</th>
+                    <th pSortableColumn="name">
+                        Descrição <p-sortIcon field="name" />
+                    </th>
+                    <th pSortableColumn="sale_price">
+                        Preço <p-sortIcon field="sale_price" />
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>
+                        <img height="
+                        40px" src="../../../../../assets/images/logo_mtt_small.png" class="w-5rem shadow-2" />
+                    </td>
+                    <td style="font-weight: 600; margin-left: 8px;">
+                        {{ product.name }}
+                    </td>
+                    <td style="margin-left: 8px;">{{ product.sale_price || 0 }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-template>
+</p-overlayPanel>
+<!-- </div> -->

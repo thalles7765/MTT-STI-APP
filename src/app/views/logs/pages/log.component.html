@@ -1,0 +1,42 @@
+<div class="d-flex align-items-center">
+    <mat-icon>format_list_bulleted</mat-icon>
+    <p style="font-size: 1.4rem; margin: 0; margin-left: 5px;"> Você está em <strong>Log's</strong></p>
+</div>
+
+<p-divider></p-divider>
+
+<br>
+
+<!-- <div class="grid"> -->
+<p-table [tableStyle]="{'font-size': '1.5rem'}" [value]="logs" dataKey="id"
+    [breakpoint]="'1000px'">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 4rem; background: transparent;"><p-tableHeaderCheckbox /></th>
+            <th style="background: transparent;">ID</th>
+            <th style="background: transparent;">Descrição</th>
+            <th style="background: transparent;">Preço</th>
+            <th style="background: transparent;">Ativo</th>
+            <th style="background: transparent;"></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr style="background: transparent;">
+            <td>
+                <p-tableCheckbox [value]="product" />
+            </td>
+            <td>{{product.id}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.sale_price}}</td>
+            <td> <mat-icon>{{product.on_sale? 'verified' : 'radio_button_unchecked'}}</mat-icon>
+            </td>
+            <td>
+                <div class="button-rounded" matTooltip="Visualizar">
+                    <mat-icon>visibility</mat-icon>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<!-- </div> -->
